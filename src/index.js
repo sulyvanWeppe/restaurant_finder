@@ -1,17 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import reactDom from 'react-dom';
+import GoogleApi from './API/GoogleApi';
+import PlaceName from './Component/PlaceName';
+import PlaceRating from './Component/PlaceRating';
+import TotalRatingUser from './Component/TotalRatingUser';
+import PlaceLocation from './Component/PlaceLocation';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import PlaceDescription from './Component/PlaceDescription';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const myPlace = {
+    placeName: "my place name",
+    placeRating: "4",
+    totalRatingUser: "100",
+    placeLocation: "100.2 100.4"
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//reactDom.render(<GoogleApi />, document.getElementById('root'));
+//reactDom.render(<PlaceName place_name="Place name"/>, document.getElementById('root'));
+//reactDom.render(<PlaceRating place_rating="4"/>, document.getElementById('root'));
+//reactDom.render(<TotalRatingUser total_rating_user="100"/>, document.getElementById('root'));
+//reactDom.render(<PlaceLocation place_location={myPlace.placeLocation}/>, document.getElementById('root'));
+
+reactDom.render(<PlaceDescription place={myPlace}/>, document.getElementById('root'));
