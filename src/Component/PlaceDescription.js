@@ -1,10 +1,9 @@
 import React from 'react';
 import '../uikit-3.4.6/css/uikit.min.css';
-import PlaceName from './PlaceName';
-import PlaceRating from './PlaceRating';
-import TotalRatingUser from './TotalRatingUser';
-import PlaceLocation from './PlaceLocation';
+import PlaceDescriptionCard from './PlaceDescriptionCard';
 import GoogleApi from '../API/GoogleApi';
+import PlaceDistance from './PlaceDistance';
+import { Container, Col, Row } from 'react-bootstrap';
 
 class PlaceDescription extends React.Component{
     constructor(props){
@@ -12,23 +11,28 @@ class PlaceDescription extends React.Component{
     }
 
     render(){
-        //@TODO : Conditionnal rendering to implement
-        
-        var displayPlaces = this.props.requestResult.map((place, index) => 
-        <li key={index}>
-            <PlaceName place_name={place.name}/>
-            <PlaceRating place_rating={place.rating} />
-            <TotalRatingUser total_rating_user={place.user_ratings_total} />
-            <PlaceLocation place_location={place.formatted_address} />
-        </li>);
+        const results = this.props.requestResult;
+        var displayPlacesInfo = null;
+        if (!results || results.length === 0)
+        {
+            displayPlacesInfo = null;
+        }
+        else{
+            var displayPlaces = results.map((placeInfo, index) => 
+            <li key={index}>
+                <PlaceDescriptionCard placeInfo={placeInfo} />
+            </li>);
+            displayPlacesInfo = <ul>{displayPlaces}</ul>;
+        }
 
         return (
-            <div class="uk-container uk-container-center" class="uk-width-2-3">
+            <div class="uk-container uk-container-center" class="uk-width-1-1">
                 <div class="uk-grid">
                     <div class="uk-width-1-1">
-                        <GoogleApi initMapState={this.props.initMapState} initRequestFunction={this.props.initRequestFunction} initRequestCountry={this.props.initRequestCountryy}/>
-                        
-                        <ul>{displayPlaces}</ul>
+                        <GoogleApi initMapState={this.props.initMapState} initRequestFunction={this.props.initRequestFunction} initRequestCountry={this.props.initRequestCountry}/>
+                        <div class="uk-column-1-2">
+                            {displayPlacesInfo}
+                        </div>
                     </div>
                 </div>
             </div>

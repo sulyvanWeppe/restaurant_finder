@@ -25,5 +25,15 @@ const countryManagement = {
     countriesList: countries
 };
 
+//reactDom.render(<GoogleApi />, document.getElementById('root'));
+//reactDom.render(<PlaceName place_name="Place name"/>, document.getElementById('root'));
+//reactDom.render(<PlaceRating place_rating="4"/>, document.getElementById('root'));
+//reactDom.render(<TotalRatingUser total_rating_user="100"/>, document.getElementById('root'));
+//reactDom.render(<PlaceLocation place_location={myPlace.placeLocation}/>, document.getElementById('root'));
+
+//reactDom.render(<PlaceDescription place={myPlace}/>, document.getElementById('root'));
+
+//reactDom.render(<SelectedCountry country_name="Luxembourg" />, document.getElementById('root'));
+//reactDom.render(<CountryManagement country_management={countryManagement}/>, document.getElementById('root'));
 
 reactDom.render(<SearchAndResultSection place={myPlace} country_management={countryManagement}/>, document.getElementById('root'));

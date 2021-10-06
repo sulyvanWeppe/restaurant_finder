@@ -1,6 +1,6 @@
 import React from "react";
 
-const apiKey = "AIzaSyAG9bsRKqsurtW1BJFQBD--d1Xw4Lv4gHc";
+const apiKey = "AIzaSyBc0tJFhFosRQlbNOBYIXffETji61BNQOI";
 var markers = [];
 var infowindow;
 var place = [];
@@ -15,7 +15,7 @@ class GoogleApi extends React.Component{
         //Create the script element loading the google places API
         var placesLibraryScript = document.createElement('script');
         placesLibraryScript.type = "text/javascript";
-        placesLibraryScript.src = "https://maps.googleapis.com/maps/api/js?key="+apiKey+"&libraries=places,geometry"
+        placesLibraryScript.src = "https://maps.googleapis.com/maps/api/js?key="+apiKey+"&libraries=places,geometry,photos"
         placesLibraryScript.id = "placesLibrary";
         placesLibraryScript.async = true;
         placesLibraryScript.defer = true;
@@ -35,20 +35,26 @@ class GoogleApi extends React.Component{
         const map = new window.google.maps.Map(
             document.getElementById('map'), {
                 center: {lat:49.5990, lng: 6.1330},
-                zoom: 5
+                zoom: 10
               }); 
         
         this.props.initMapState(map);
     }
 
     initRequest = () => {
+        console.log('initRequestCountry = '+this.props.initRequestCountry);
         this.props.initRequestFunction(this.props.initRequestCountry);
     }
 
     render() {
         return (
-                <div className="map" id='map'/>
-            
+            <div class="uk-container uk-container-center" class="uk-width-1-1" >
+                <div class="uk-grid">
+                    <div class="uk-width-1-1">
+                        <div className="map" id='map'/>
+                    </div>
+                </div>
+            </div>
         );
     }
 

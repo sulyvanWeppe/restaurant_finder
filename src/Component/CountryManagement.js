@@ -4,6 +4,7 @@ import CountryList from './CountryList';
 import SelectedCountry from './SelectedCountry';
 import UIkit from '../uikit-3.4.6/css/uikit.min.css';
 import * as ArrayUtil from "../Util/ArrayUtil.js"
+import { Container, Row, Col } from 'react-bootstrap';
 
 class CountryManagement extends React.Component{
     constructor(props){
@@ -32,15 +33,15 @@ class CountryManagement extends React.Component{
     }
 
     render(){
-        return (   
-            <div class="uk-container uk-container-center" class="uk-width-1-3">
-                <div class="uk-grid">
-                    <div class="uk-width-1-1">
+        return ( 
+            <Container id="country_management">
+                <Row>
+                    <Col>
                         <SelectedCountry country_name={this.props.selectedCountry} handleRefresh={this.handleRefresh} />
                         <CountryList countries={this.props.countriesList} handleAddCountry={this.handleAddCountry} handleDeleteCountry={this.handleDeleteCountry} />
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }

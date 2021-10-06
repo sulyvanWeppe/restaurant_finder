@@ -5,22 +5,25 @@ import PlaceDescription from './PlaceDescription';
 import * as ArrayUtil from "../Util/ArrayUtil.js";
 import * as MapsUtil from "../Util/MapsUtil.js";
 import GoogleApi from '../API/GoogleApi';
+import Toto from './Toto.js';
 import '../index.css';
+import '../uikit-3.4.6/css/uikit.min.css';
+import { Container, Row, Col } from 'react-bootstrap';
 
 
 class SearchAndResultSection extends React.Component{
     constructor(props){
         super(props);
 
-        var countries = ['Luxembourgish', 'French', 'German', 'Italian', 'Spainish'];
+        var countries = ['French', 'Italian', 'Spanish', 'American', 'Mexican'];
         //Get Random country from the countries list
-        const randomCountry = ArrayUtil.getRandomElement(countries); 
-
+        var randomCountry = ArrayUtil.getRandomElement(countries); 
         this.state = {
-            userCountryInput: randomCountry ?? '',
+            userCountryInput: randomCountry ? randomCountry : '',
             countriesList: countries, 
             map: null,
-            requestResult: []
+            mapMarkers: null,
+            requestResult: null
         };
     }
 
@@ -29,13 +32,17 @@ class SearchAndResultSection extends React.Component{
     }
 
     performPlaceRequest = (country) => {
+        if (!country)
+        {
+            return;
+        }
         //Initialize variable
         const currentMap = this.state.map;
         const infoWindow = new window.google.maps.InfoWindow();
         const originLocation = new window.google.maps.LatLng(49.5990, 6.1330);
         const maxDistance = 1000;
         const request = {
-            query:  country+' restaurant',
+            query: country+' restaurant',
             location: originLocation,
             type: 'restaurant'
         };
@@ -47,25 +54,40 @@ class SearchAndResultSection extends React.Component{
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 //Empty previous result
                 that.setState({requestResult: null});
+                MapsUtil.removeMarkersFromMap(currentMap, that.state.mapMarkers);
+                that.setState({mapMarkers: null});
 
                 for (var i = 0; i < results.length; i++) {
                     //Check if it is in the authorized perimeter
                     var distanceFromOrigin = window.google.maps.geometry.spherical.computeDistanceBetween(originLocation, results[i].geometry.location);
                     if (distanceFromOrigin <= maxDistance)
                     {                     
-                        var place = results[i];
+                        const place = results[i];
+                        const placeInfo = {place: place, distanceFromOrigin: distanceFromOrigin};
                         //Store the place info
                         that.setState((prevState) => 
                         {
-                                return {requestResult: [...prevState.requestResult, place]};
+                            if (!prevState.requestResult)
+                            {
+                                return {requestResult: [placeInfo]};
+                            }
+                            else {
+                                return {requestResult: ArrayUtil.sortPlaces([...prevState.requestResult, placeInfo], 'rating')};
+                            }
                         });
                         
-
-                        var infoWindowContent = '<div><strong>'+place.name+'</strong>'
-                                                +'<br>'+place.formatted_address+'</div>';
                                                 
                         //Set Marker on the Map
-                        MapsUtil.setFullMarker(currentMap, place.geometry.location, place.name, infoWindow, infoWindowContent);
+                        var marker = MapsUtil.setFullMarker(currentMap, placeInfo, infoWindow);
+                        that.setState((prevState) => {
+                            if (!prevState.mapMarkers)
+                            {
+                                return {mapMarkers: [marker]};
+                            }
+                            else {
+                                return {mapMarkers: [...prevState.mapMarkers, marker]};
+                            }
+                        });
                     }
                 }
             }
@@ -95,20 +117,24 @@ class SearchAndResultSection extends React.Component{
 
     render(){
         return (
-            <div class="uk-container uk-container-center">
-                <div class="uk-grid">
-                        <PlaceDescription   place={this.props.place}
-                                            initMapState={this.initMapState}
-                                            initRequestFunction={this.performPlaceRequest}
-                                            initRequestCountry={this.state.userCountryInput}
-                                            requestResult={this.state.requestResult}/>
+            <Container>
+                <Row>
+                    <Col sm={4}>
                         <CountryManagement  countriesList={this.state.countriesList} 
-                                            selectedCountry={this.state.userCountryInput} 
-                                            handleRefresh={this.updateSelectedCountry} 
-                                            handleAddCountry={this.addCountryToList} 
-                                            handleDeleteCountry={this.deleteCountryFromList} />      
-                </div>
-            </div>
+                                                    selectedCountry={this.state.userCountryInput} 
+                                                    handleRefresh={this.updateSelectedCountry} 
+                                                    handleAddCountry={this.addCountryToList} 
+                                                    handleDeleteCountry={this.deleteCountryFromList}/>  
+                    </Col>
+                    <Col>
+                        <PlaceDescription   place={this.props.place}
+                                                    initMapState={this.initMapState}
+                                                    initRequestFunction={this.performPlaceRequest}
+                                                    initRequestCountry={this.state.userCountryInput}
+                                                    requestResult={this.state.requestResult}/> 
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }

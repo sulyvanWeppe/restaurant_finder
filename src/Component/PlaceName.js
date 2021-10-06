@@ -8,7 +8,7 @@ class PlaceName extends React.Component{
 
     render(){
         return (
-            <h1 class="uk-heading-small">{this.props.place_name}</h1>
+            <h3 class="uk-heading-small">{this.props.place_name}</h3>
         )
     }
 }

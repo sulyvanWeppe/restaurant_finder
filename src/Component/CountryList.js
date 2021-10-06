@@ -46,10 +46,10 @@ class CountryList extends React.Component{
         );
 
         return (
-            <div class="uk-container uk-container-center">
+            <div class="uk-container uk-container-center uk-width-1-1" id="country_list">
                 <div class="uk-grid">        
                     <div class="uk-width-1-1">
-                        <h1 class="uk-heading-small">Countries List</h1>
+                        <h3 class="uk-heading-small">Food Type List</h3>
                         <div class="uk-panel uk-panel-scrollable">
                             <ul class="uk-list">
                                 {countriesListDisplay}
@@ -57,7 +57,7 @@ class CountryList extends React.Component{
                         </div>
                         <form>
                             <div class="uk-margin">
-                                <div class="uk-inline">
+                                <div class="uk-inline" id="country_management_button">
                                     <button class="uk-button uk-button-primary" onClick={this.handleAddCountryClick}>Add Country</button>
                                     <button class="uk-button uk-button-primary" onClick={this.handleDeleteCountryClick}>Delete Country</button>
                                 </div>
