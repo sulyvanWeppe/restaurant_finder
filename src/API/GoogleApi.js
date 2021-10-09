@@ -1,6 +1,8 @@
 import React from "react";
+import { Container, Row } from 'react-bootstrap';
+import { getGoogleApiKey } from "../Util/GoogleApiKey";
 
-const apiKey = "AIzaSyBc0tJFhFosRQlbNOBYIXffETji61BNQOI";
+const apiKey = getGoogleApiKey();
 var markers = [];
 var infowindow;
 var place = [];
@@ -48,13 +50,11 @@ class GoogleApi extends React.Component{
 
     render() {
         return (
-            <div class="uk-container uk-container-center" class="uk-width-1-1" >
-                <div class="uk-grid">
-                    <div class="uk-width-1-1">
-                        <div className="map" id='map'/>
-                    </div>
-                </div>
-            </div>
+            <Container id="map" >
+                <Row>
+                    <div className="map" id='map'/>
+                </Row>
+            </Container>
         );
     }
 

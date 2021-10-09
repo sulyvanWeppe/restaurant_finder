@@ -2,7 +2,8 @@ import React from 'react';
 import '../uikit-3.4.6/css/uikit.min.css';
 import CountryList from './CountryList';
 import SelectedCountry from './SelectedCountry';
-import UIkit from '../uikit-3.4.6/css/uikit.min.css';
+import OrderBySelector from './OrderBySelector';
+import DistanceRangeSelector from './DistanceRangeSelector';
 import * as ArrayUtil from "../Util/ArrayUtil.js"
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -12,7 +13,11 @@ class CountryManagement extends React.Component{
     }
 
     handleRefresh = () => {
-        const randomCountry = ArrayUtil.getRandomElement(this.props.countriesList) ?? '';
+        var randomCountry;
+        do {
+            randomCountry = ArrayUtil.getRandomElement(this.props.countriesList) ?? '';
+        } while (randomCountry === this.props.selectedCountry)
+        
         this.props.handleRefresh(randomCountry);
     }
 
@@ -32,6 +37,10 @@ class CountryManagement extends React.Component{
         this.props.handleDeleteCountry(country);
     }
 
+    handleRangeDistanceChange = (distance) => {
+        this.props.handleRange(distance);
+    }
+
     render(){
         return ( 
             <Container id="country_management">
@@ -39,6 +48,10 @@ class CountryManagement extends React.Component{
                     <Col>
                         <SelectedCountry country_name={this.props.selectedCountry} handleRefresh={this.handleRefresh} />
                         <CountryList countries={this.props.countriesList} handleAddCountry={this.handleAddCountry} handleDeleteCountry={this.handleDeleteCountry} />
+                        <div class="uk-divider-icon"></div>
+                        <h3>Settings</h3>
+                        <OrderBySelector handleOrderByChange={this.props.handleOrderBy}/>
+                        <DistanceRangeSelector handleRangeDistanceChange={this.handleRangeDistanceChange} distanceRangeValue={this.props.distanceRangeValue}/>
                     </Col>
                 </Row>
             </Container>

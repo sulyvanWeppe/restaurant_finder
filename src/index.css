@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Aref+Ruqaa');
+
 body {
   background: rgb(91, 26, 153);
 }
@@ -8,7 +10,9 @@ body {
 }
 
 #search_and_result_section {
-  background-color: rgb(248, 248, 248);
+  background-color: rgb(244, 244, 244);
+  min-width: 100%;
+  min-height: 100%;
 }
 
 /************************
@@ -17,26 +21,62 @@ CountryManagement
 #country_management {
   margin-top: 3%;
   margin-bottom: 3%;
+  background-color: rgba(87, 82, 22, 0.3);
+  min-height: 100%;
 }
 
-/*#selected_country, #country_list{
-  margin-left: 3%;
-  margin-right: 3%;
+#country_management h3,
+#country_management h4 {
+  font-family: 'Aref Ruqaa';
 }
 
-#country_list h3,
-#selected_country h3{
-  font-size: xx-large;
-  text-align: left;
-}
-
+/************************
+SelectedCountry
+************************/
 #selected_country button{
-  margin-left: 0.1%;
   margin-top: 3%;
 }
 
-#country_management_button{
-  margin-top: 2%;
-}*/
-      
+/************************
+CountryList
+************************/
+#country_list button{
+  margin-top: 3%;
+  margin-right: 0.1%;
+}
+
+#country_list .uk-panel{
+  border: solid rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
+}
+
+/************************
+PlaceDescription
+************************/
+#place_description {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#place_description svg {
+  margin-right: 2%;
+}
+
+#place_description ul {
+  list-style-type: none;
+}
+
+#placeDescription Alert {
+  margin-top: 3%;
+}
+
+/************************
+GoogleApi
+************************/
+#map {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
       

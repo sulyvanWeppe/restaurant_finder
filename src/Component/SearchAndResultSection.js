@@ -4,11 +4,9 @@ import CountryManagement from './CountryManagement';
 import PlaceDescription from './PlaceDescription';
 import * as ArrayUtil from "../Util/ArrayUtil.js";
 import * as MapsUtil from "../Util/MapsUtil.js";
-import GoogleApi from '../API/GoogleApi';
-import Toto from './Toto.js';
 import '../index.css';
 import '../uikit-3.4.6/css/uikit.min.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 
 
 class SearchAndResultSection extends React.Component{
@@ -19,12 +17,34 @@ class SearchAndResultSection extends React.Component{
         //Get Random country from the countries list
         var randomCountry = ArrayUtil.getRandomElement(countries); 
         this.state = {
+            userLocation: {latitude: null, longitude: null},
             userCountryInput: randomCountry ? randomCountry : '',
             countriesList: countries, 
             map: null,
             mapMarkers: null,
-            requestResult: null
+            requestResult: null,
+            orderBy: 'rating',
+            maxDistance: '1000'
         };
+    }
+
+    componentDidMount = () => {
+        const that = this;
+
+        function initUserPosition(position){
+            that.setState({userLocation: {latitude: position.coords.latitude, longitude: position.coords.longitude}});
+        }
+
+        function cancelApplicationUse(){
+            alert('This application cannot work without your location');
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(initUserPosition, cancelApplicationUse);
+        }
+        else {
+            alert('Sorry your browser does not support Geolocation');
+        }
     }
 
     initMapState = (initMap) => {
@@ -39,8 +59,8 @@ class SearchAndResultSection extends React.Component{
         //Initialize variable
         const currentMap = this.state.map;
         const infoWindow = new window.google.maps.InfoWindow();
-        const originLocation = new window.google.maps.LatLng(49.5990, 6.1330);
-        const maxDistance = 1000;
+        const originLocation = new window.google.maps.LatLng(this.state.userLocation.latitude, this.state.userLocation.longitude);
+        const maxDistance = this.state.maxDistance;
         const request = {
             query: country+' restaurant',
             location: originLocation,
@@ -72,7 +92,7 @@ class SearchAndResultSection extends React.Component{
                                 return {requestResult: [placeInfo]};
                             }
                             else {
-                                return {requestResult: ArrayUtil.sortPlaces([...prevState.requestResult, placeInfo], 'rating')};
+                                return {requestResult: ArrayUtil.sortPlaces([...prevState.requestResult, placeInfo], that.state.orderBy)};
                             }
                         });
                         
@@ -115,27 +135,74 @@ class SearchAndResultSection extends React.Component{
         });
     }
 
+    updateOrderBy = (selector) => {
+        this.setState({orderBy: selector});
+        ArrayUtil.sortPlaces(this.state.requestResult, selector);
+    }
+
+    updateRangeDistance = (distance) => {
+        this.setState({maxDistance: distance});
+        this.performPlaceRequest(this.state.userCountryInput);
+    }
+
+
     render(){
-        return (
-            <Container>
-                <Row>
-                    <Col sm={4}>
-                        <CountryManagement  countriesList={this.state.countriesList} 
-                                                    selectedCountry={this.state.userCountryInput} 
-                                                    handleRefresh={this.updateSelectedCountry} 
-                                                    handleAddCountry={this.addCountryToList} 
-                                                    handleDeleteCountry={this.deleteCountryFromList}/>  
-                    </Col>
-                    <Col>
-                        <PlaceDescription   place={this.props.place}
-                                                    initMapState={this.initMapState}
-                                                    initRequestFunction={this.performPlaceRequest}
-                                                    initRequestCountry={this.state.userCountryInput}
-                                                    requestResult={this.state.requestResult}/> 
-                    </Col>
-                </Row>
-            </Container>
-        )
+        //Check if the user allowed the use of his location
+        const isUserLocationAvailable = this.state.userLocation.latitude && this.state.userLocation.longitude;
+        if (isUserLocationAvailable)
+        {//The user allowed it
+            return (
+                <Container id="search_and_result_section">
+                    <Row>
+                        <Col sm={3}>
+                            <CountryManagement  countriesList={this.state.countriesList} 
+                                                        selectedCountry={this.state.userCountryInput} 
+                                                        handleRefresh={this.updateSelectedCountry} 
+                                                        handleAddCountry={this.addCountryToList} 
+                                                        handleDeleteCountry={this.deleteCountryFromList}
+                                                        handleOrderBy={this.updateOrderBy}
+                                                        handleRange={this.updateRangeDistance}
+                                                        distanceRangeValue={this.state.maxDistance}/>  
+                        </Col>
+                        <Col>
+                            <PlaceDescription   place={this.props.place}
+                                                        initMapState={this.initMapState}
+                                                        initRequestFunction={this.performPlaceRequest}
+                                                        initRequestCountry={this.state.userCountryInput}
+                                                        requestResult={this.state.requestResult}/> 
+                        </Col>
+                    </Row>
+                </Container>
+            );    
+        }
+        else 
+        {//The user did not allow it
+            return (
+                <Container id="search_and_result_section">
+                    <Row>
+                        <Col sm={3}>
+                            <CountryManagement  countriesList={this.state.countriesList} 
+                                                        selectedCountry={this.state.userCountryInput} 
+                                                        handleRefresh={this.updateSelectedCountry} 
+                                                        handleAddCountry={this.addCountryToList} 
+                                                        handleDeleteCountry={this.deleteCountryFromList}
+                                                        handleOrderBy={this.updateOrderBy}
+                                                        handleRange={this.updateRangeDistance}
+                                                        distanceRangeValue={this.state.maxDistance}/>  
+                        </Col>
+                        <Col>
+                            <Alert variant="danger" dismissible>
+                                <Alert.Heading>Application not usable</Alert.Heading>
+                                <p>
+                                    The purpose of this application is to randomly suggest you restaurants based on a kind of food you like nearby your location.
+                                    <br/>Without this latest the application cannot work. 
+                                </p>
+                            </Alert>
+                        </Col>
+                    </Row>
+                </Container>
+            );  
+        }
     }
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import Toto from './Toto';
 
 class SelectedCountry extends React.Component{
     constructor(props){

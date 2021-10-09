@@ -1,4 +1,5 @@
 import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import '../uikit-3.4.6/css/uikit.min.css';
 
 class CountryList extends React.Component{
@@ -46,26 +47,28 @@ class CountryList extends React.Component{
         );
 
         return (
-            <div class="uk-container uk-container-center uk-width-1-1" id="country_list">
-                <div class="uk-grid">        
-                    <div class="uk-width-1-1">
-                        <h3 class="uk-heading-small">Food Type List</h3>
-                        <div class="uk-panel uk-panel-scrollable">
-                            <ul class="uk-list">
-                                {countriesListDisplay}
-                            </ul>
-                        </div>
-                        <form>
-                            <div class="uk-margin">
-                                <div class="uk-inline" id="country_management_button">
-                                    <button class="uk-button uk-button-primary" onClick={this.handleAddCountryClick}>Add Country</button>
-                                    <button class="uk-button uk-button-primary" onClick={this.handleDeleteCountryClick}>Delete Country</button>
-                                </div>
-                            </div>
-                        </form>
+            <Container id="country_list">
+                <Row>
+                    <h3 class="uk-heading-small">Food Type List</h3>
+                </Row>
+                <Row>
+                    <div class="uk-panel">
+                        <ul class="uk-list">
+                            {countriesListDisplay}
+                        </ul>
                     </div>
-                </div>
-            </div>
+                </Row>
+                <Row>
+                    <form>
+                        <div class="uk-margin">
+                            <div class="uk-inline" id="country_management_button">
+                                <button class="uk-button uk-button-primary" onClick={this.handleAddCountryClick}>Add Country</button>
+                                <button class="uk-button uk-button-primary" onClick={this.handleDeleteCountryClick}>Delete Country</button>
+                            </div>
+                        </div>
+                    </form>  
+                </Row>
+            </Container>
         );
     }
 }
