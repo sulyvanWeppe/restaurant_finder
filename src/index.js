@@ -1,17 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import reactDom from 'react-dom';
+import GoogleApi from './API/GoogleApi';
+import PlaceName from './Component/PlaceName';
+import PlaceRating from './Component/PlaceRating';
+import TotalRatingUser from './Component/TotalRatingUser';
+import PlaceLocation from './Component/PlaceLocation';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import SearchAndResultSection from './Component/SearchAndResultSection';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+reactDom.render(<SearchAndResultSection />, document.getElementById('root'));
