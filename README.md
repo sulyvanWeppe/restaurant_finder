@@ -1,2 +1,5 @@
+#Restaurant Finder
 
-<h2>Toto</h2>
+##General presentation
+
+##User guide
