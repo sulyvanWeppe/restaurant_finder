@@ -13,7 +13,7 @@ class OrderBySelector extends React.Component{
     render(){
         return (
             <Container >
-                <Row><h4>Order result by : </h4></Row>
+                <Row><h4>Order results by : </h4></Row>
                 <Row>
                     <Form.Group as={Row} className="mb-3" >
                         <Col>
