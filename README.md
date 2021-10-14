@@ -5,7 +5,10 @@ You are tired of loosing time every single day to find a restaurant which suits 
 Then Restaurant Finder is for you !  
 Based on the list of your favourite food kinds (French, Italian ... ) Restaurant Finder will each day randomly select one and suggest you the best restaurant nearby your loaction corresponding to that kind of food.
 
-![toto](https://github.com/sulyvanWeppe/restaurant_finder/blob/master/public/restaurantFinderOverview1.png)
+![Restaurant Finder overview](https://github.com/sulyvanWeppe/restaurant_finder/blob/master/public/restaurantFinderOverview1.png)  
+  
+  
+![Restaurant Finder card](https://github.com/sulyvanWeppe/restaurant_finder/blob/master/public/cardExample.png)
 
 ## User guide
 ### Refresh the selected country
